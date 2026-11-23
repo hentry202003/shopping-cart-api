@@ -1,3 +1,4 @@
+
 package com.shoppingcart.shopping_cart_api.config;
 
 import com.shoppingcart.shopping_cart_api.security.JwtAuthenticationFilter;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -39,6 +41,12 @@ public class SecurityConfig {
                         "/api/users/register",
                         "/api/users/login"
                 ).permitAll()
+
+                .requestMatchers(
+                        HttpMethod.GET,
+                        "/api/products/**"
+                ).permitAll()
+
                 .anyRequest().authenticated()
         );
 
@@ -66,9 +74,7 @@ public class SecurityConfig {
                 List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
         );
 
-        configuration.setAllowedHeaders(
-                List.of("*")
-        );
+        configuration.setAllowedHeaders(List.of("*"));
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
